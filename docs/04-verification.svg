@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="375" height="667" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="375" height="667" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  
+  <!-- 헤더 -->
+  <rect x="0" y="0" width="375" height="60" fill="#ffffff" stroke="#dee2e6"/>
+  <text x="187.5" y="35" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#212529">검증 진행 중...</text>
+  
+  <!-- 메인 컨텐츠 영역 -->
+  <rect x="20" y="80" width="335" height="520" fill="#ffffff" stroke="#dee2e6" rx="8"/>
+  
+  <!-- 현재 검증 중인 명제 -->
+  <text x="187.5" y="105" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#495057">현재 검증 중: 명제 1</text>
+  <rect x="40" y="110" width="295" height="40" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="187.5" y="135" text-anchor="middle" font-family="Arial" font-size="12" fill="#212529">"토끼는 포유동물이다"</text>
+  
+  <!-- 진행률 -->
+  <text x="187.5" y="170" text-anchor="middle" font-family="Arial" font-size="14" fill="#495057">검증 진행률: 6/9 완료</text>
+  <rect x="60" y="175" width="255" height="6" fill="#e9ecef" rx="3"/>
+  <rect x="60" y="175" width="170" height="6" fill="#007bff" rx="3"/>
+  
+  <!-- 3x3 검증자 그리드 -->
+  <text x="187.5" y="205" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#495057">검증자 현황</text>
+  
+  <!-- 1행 -->
+  <!-- 검증자 1 - 완료(사실) -->
+  <rect x="60" y="220" width="80" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="4"/>
+  <circle cx="100" cy="245" r="8" fill="#28a745"/>
+  <text x="100" y="250" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✓</text>
+  <text x="100" y="265" text-anchor="middle" font-family="Arial" font-size="10" fill="#155724">검증자 1</text>
+  <text x="100" y="280" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#28a745">사실</text>
+  <text x="100" y="295" text-anchor="middle" font-family="Arial" font-size="9" fill="#155724">완료</text>
+  
+  <!-- 검증자 2 - 완료(사실) -->
+  <rect x="147.5" y="220" width="80" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="4"/>
+  <circle cx="187.5" cy="245" r="8" fill="#28a745"/>
+  <text x="187.5" y="250" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✓</text>
+  <text x="187.5" y="265" text-anchor="middle" font-family="Arial" font-size="10" fill="#155724">검증자 2</text>
+  <text x="187.5" y="280" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#28a745">사실</text>
+  <text x="187.5" y="295" text-anchor="middle" font-family="Arial" font-size="9" fill="#155724">완료</text>
+  
+  <!-- 검증자 3 - 완료(사실) -->
+  <rect x="235" y="220" width="80" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="4"/>
+  <circle cx="275" cy="245" r="8" fill="#28a745"/>
+  <text x="275" y="250" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✓</text>
+  <text x="275" y="265" text-anchor="middle" font-family="Arial" font-size="10" fill="#155724">검증자 3</text>
+  <text x="275" y="280" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#28a745">사실</text>
+  <text x="275" y="295" text-anchor="middle" font-family="Arial" font-size="9" fill="#155724">완료</text>
+  
+  <!-- 2행 -->
+  <!-- 검증자 4 - 완료(사실) -->
+  <rect x="60" y="310" width="80" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="4"/>
+  <circle cx="100" cy="335" r="8" fill="#28a745"/>
+  <text x="100" y="340" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✓</text>
+  <text x="100" y="355" text-anchor="middle" font-family="Arial" font-size="10" fill="#155724">검증자 4</text>
+  <text x="100" y="370" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#28a745">사실</text>
+  <text x="100" y="385" text-anchor="middle" font-family="Arial" font-size="9" fill="#155724">완료</text>
+  
+  <!-- 검증자 5 - 완료(거짓) -->
+  <rect x="147.5" y="310" width="80" height="80" fill="#f8d7da" stroke="#dc3545" stroke-width="2" rx="4"/>
+  <circle cx="187.5" cy="335" r="8" fill="#dc3545"/>
+  <text x="187.5" y="340" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✗</text>
+  <text x="187.5" y="355" text-anchor="middle" font-family="Arial" font-size="10" fill="#721c24">검증자 5</text>
+  <text x="187.5" y="370" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#dc3545">거짓</text>
+  <text x="187.5" y="385" text-anchor="middle" font-family="Arial" font-size="9" fill="#721c24">완료</text>
+  
+  <!-- 검증자 6 - 검증 중 -->
+  <rect x="235" y="310" width="80" height="80" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="4"/>
+  <circle cx="275" cy="335" r="8" fill="#ffc107">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <text x="275" y="355" text-anchor="middle" font-family="Arial" font-size="10" fill="#856404">검증자 6</text>
+  <text x="275" y="370" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#ffc107">검증중...</text>
+  <text x="275" y="385" text-anchor="middle" font-family="Arial" font-size="9" fill="#856404">30초</text>
+  
+  <!-- 3행 -->
+  <!-- 검증자 7 - 완료(사실) -->
+  <rect x="60" y="400" width="80" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="4"/>
+  <circle cx="100" cy="425" r="8" fill="#28a745"/>
+  <text x="100" y="430" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff">✓</text>
+  <text x="100" y="445" text-anchor="middle" font-family="Arial" font-size="10" fill="#155724">검증자 7</text>
+  <text x="100" y="460" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#28a745">사실</text>
+  <text x="100" y="475" text-anchor="middle" font-family="Arial" font-size="9" fill="#155724">완료</text>
+  
+  <!-- 검증자 8 - 대기 중 -->
+  <rect x="147.5" y="400" width="80" height="80" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="4"/>
+  <circle cx="187.5" cy="425" r="8" fill="#dee2e6"/>
+  <text x="187.5" y="445" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">검증자 8</text>
+  <text x="187.5" y="460" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">대기중</text>
+  
+  <!-- 검증자 9 - 대기 중 -->
+  <rect x="235" y="400" width="80" height="80" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="4"/>
+  <circle cx="275" cy="425" r="8" fill="#dee2e6"/>
+  <text x="275" y="445" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">검증자 9</text>
+  <text x="275" y="460" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">대기중</text>
+  
+  <!-- 현재 결과 -->
+  <text x="187.5" y="505" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">현재 결과: 사실 5표, 거짓 1표</text>
+  
+  <!-- 예상 완료 시간 -->
+  <text x="187.5" y="525" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">예상 완료 시간: 약 1분 남음</text>
+</svg> 

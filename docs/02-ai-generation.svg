@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="375" height="667" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="375" height="667" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  
+  <!-- 헤더 -->
+  <rect x="0" y="0" width="375" height="60" fill="#ffffff" stroke="#dee2e6"/>
+  <text x="187.5" y="35" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#212529">답변 생성 중...</text>
+  
+  <!-- 메인 컨텐츠 영역 -->
+  <rect x="20" y="80" width="335" height="480" fill="#ffffff" stroke="#dee2e6" rx="8"/>
+  
+  <!-- 사용자 질문 표시 -->
+  <rect x="40" y="100" width="295" height="60" fill="#f8f9fa" stroke="#dee2e6" rx="4"/>
+  <text x="50" y="120" font-family="Arial" font-size="12" fill="#6c757d">입력한 질문:</text>
+  <text x="50" y="140" font-family="Arial" font-size="14" fill="#212529">"토끼에 대해 알려줘"</text>
+  
+  <!-- 로딩 애니메이션 영역 -->
+  <circle cx="187.5" cy="250" r="30" fill="none" stroke="#007bff" stroke-width="3" stroke-dasharray="10,5">
+    <animateTransform attributeName="transform" type="rotate" values="0 187.5 250;360 187.5 250" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="187.5" cy="250" r="15" fill="#007bff"/>
+  
+  <!-- 상태 텍스트 -->
+  <text x="187.5" y="310" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#212529">GPT가 답변을 생성하고 있어요</text>
+  <text x="187.5" y="335" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">잠시만 기다려주세요...</text>
+  
+  <!-- 진행률 바 -->
+  <rect x="60" y="360" width="255" height="8" fill="#e9ecef" rx="4"/>
+  <rect x="60" y="360" width="180" height="8" fill="#007bff" rx="4"/>
+  <text x="187.5" y="385" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">70% 완료 (예상 30초 남음)</text>
+  
+  <!-- 단계 표시 -->
+  <text x="187.5" y="420" text-anchor="middle" font-family="Arial" font-size="14" fill="#495057">현재 단계: 1/4</text>
+  
+  <!-- 단계 인디케이터 -->
+  <circle cx="120" cy="450" r="8" fill="#007bff"/>
+  <text x="120" y="470" text-anchor="middle" font-family="Arial" font-size="10" fill="#007bff">답변생성</text>
+  
+  <circle cx="160" cy="450" r="8" fill="#dee2e6"/>
+  <text x="160" y="470" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">명제분할</text>
+  
+  <circle cx="200" cy="450" r="8" fill="#dee2e6"/>
+  <text x="200" y="470" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">검증</text>
+  
+  <circle cx="240" cy="450" r="8" fill="#dee2e6"/>
+  <text x="240" y="470" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">결과</text>
+  
+  <!-- 취소 버튼 -->
+  <rect x="40" y="500" width="295" height="40" fill="#ffffff" stroke="#dc3545" rx="4"/>
+  <text x="187.5" y="525" text-anchor="middle" font-family="Arial" font-size="14" fill="#dc3545">취소</text>
+</svg> 

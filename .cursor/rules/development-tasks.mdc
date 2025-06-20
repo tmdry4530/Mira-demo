@@ -1,0 +1,36 @@
+---
+description: development-tasks
+globs: 
+alwaysApply: false
+---
+# Mira 합의메커니즘 웹앱 - 개발 Task 정의
+
+## 프로젝트 개요
+Mira 합의메커니즘 시연 웹앱의 개발 task를 큰 단위로 정의합니다.
+
+**참조 룰**: 
+- [mira-prd.mdc](mdc:.cursor/rules/mira-prd.mdc) - 사용자 여정 및 기능 요구사항
+- [api-specification.mdc](mdc:.cursor/rules/api-specification.mdc) - API 엔드포인트 명세
+- [system-architecture.mdc](mdc:.cursor/rules/system-architecture.mdc) - 시스템 아키텍처 설계
+- [tech-stack.mdc](mdc:.cursor/rules/tech-stack.mdc) - 기술스택 가이드
+
+## 개발 Task 정의
+
+| task_id | title | description | status | dependencies | priority | details | test_strategy |
+|---------|-------|------------|--------|--------------|----------|---------|---------------|
+| T001 | 프로젝트 초기 설정 및 인프라 구축 | Next.js 프로젝트 설정, Express.js API 서버 구축, 기본 환경 설정 | TODO | - | HIGH | Next.js 15.1.8 App Router, TypeScript 5.7.x, Express.js 5.x 서버, 환경변수 설정, CORS 설정 | 프로젝트 빌드 성공, 개발 서버 구동 확인, API 서버 health check |
+| T002 | AI API 연동 시스템 | Google Gemini API 연동 및 에러 핸들링 구현 (답변 생성용/명제 분할 및 검증용 분리) | TODO | T001 | HIGH | Google AI SDK 연동, API 키 관리 (2개 분리), Rate Limiting, 재시도 로직, 에러 핸들링 | Mock API 테스트, 실제 API 호출 테스트, 에러 시나리오 테스트 |
+| T003 | 질문 입력 및 검증 시스템 | 사용자 질문 입력 UI와 질문 검증 API 구현 | TODO | T001, T002 | HIGH | 텍스트 입력창, 전송 버튼, 입력 가이드, 질문 유효성 검증, /api/question 엔드포인트 | 입력 validation 테스트, API 엔드포인트 테스트, UI 반응성 테스트 |
+| T004 | AI 답변 생성 시스템 | Gemini API를 통한 답변 생성 및 실시간 진행률 표시 | TODO | T002, T003 | HIGH | Gemini API 호출 (답변 생성용 키), 로딩 애니메이션, 진행률 표시, WebSocket/SSE 실시간 업데이트, /api/generate 엔드포인트 | Gemini API 응답 테스트, 실시간 업데이트 테스트, 로딩 상태 UI 테스트 |
+| T005 | 명제 분할 시스템 | Gemini API를 통한 답변 분할 및 명제 시각화 | TODO | T004 | HIGH | Gemini API 호출 (명제 분할 및 검증용 키), 답변 파싱, 명제 분할 로직, 분할 결과 시각화, /api/split 엔드포인트 | 분할 정확도 테스트, API 응답 형식 테스트, 시각화 UI 테스트 |
+| T006 | 9개 검증자 병렬 시스템 | 9개 Gemini API 병렬 호출 및 검증 과정 시각화 | TODO | T005 | HIGH | 병렬 API 호출 (명제 분할 및 검증용 키), 3x3 그리드 UI, 검증자 상태 관리, 실시간 진행률, /api/verify 엔드포인트 | 병렬 처리 성능 테스트, 동시성 테스트, 그리드 UI 테스트 |
+| T007 | 합의 메커니즘 및 결과 시스템 | 과반수 판정 로직과 최종 결과 표시 | TODO | T006 | HIGH | 과반수(5/9) 판정 알고리즘, 결과 집계, 투표수 표시, 원본 답변 비교, /api/consensus 엔드포인트 | 판정 로직 테스트, 결과 정확성 테스트, UI 가독성 테스트 |
+| T008 | 상태 관리 및 라우팅 시스템 | Zustand 상태 관리와 Next.js App Router 구현 | TODO | T003, T004, T005 | MEDIUM | Zustand store 설계, 상태 동기화, 페이지 라우팅, 브라우저 히스토리 관리 | 상태 일관성 테스트, 라우팅 테스트, 브라우저 뒤로가기 테스트 |
+| T009 | UI/UX 컴포넌트 시스템 | Tailwind CSS, Framer Motion을 활용한 반응형 UI 구현 | TODO | T001 | MEDIUM | 반응형 디자인, 애니메이션, 색상 시스템(사실=초록, 거짓=빨강), Headless UI 컴포넌트 | 반응형 테스트, 애니메이션 성능 테스트, 접근성 테스트 |
+| T010 | 실시간 통신 시스템 | WebSocket/SSE를 통한 실시간 진행률 업데이트 | TODO | T004, T006 | MEDIUM | WebSocket 연결 관리, 실시간 데이터 동기화, 연결 재시도, /api/progress 엔드포인트 | 연결 안정성 테스트, 실시간 동기화 테스트, 재연결 테스트 |
+| T011 | 에러 핸들링 및 사용자 피드백 | 전역 에러 핸들링과 친화적인 오류 메시지 시스템 | TODO | T002, T004, T005, T006 | MEDIUM | Error Boundary, API 에러 처리, 사용자 알림, 재시도 메커니즘, 로딩 상태 관리 | 에러 시나리오 테스트, 사용자 경험 테스트, 복구 테스트 |
+| T012 | 성능 최적화 시스템 | 번들 최적화, 캐싱, 코드 분할 구현 | TODO | T008, T009 | LOW | Next.js Image 최적화, Dynamic imports, API 응답 캐싱, Bundle analyzer | 성능 벤치마크, 로딩 시간 테스트, 메모리 사용량 테스트 |
+| T013 | 보안 및 모니터링 시스템 | API 보안, Rate Limiting, 로깅 및 모니터링 구현 | TODO | T002, T010 | LOW | Helmet.js 보안, Rate Limiting, Winston 로깅, 메트릭 수집, 알림 설정 | 보안 취약점 테스트, 부하 테스트, 모니터링 알림 테스트 |
+| T014 | 테스트 자동화 시스템 | Unit, Integration, E2E 테스트 구현 | TODO | T003, T004, T005, T006, T007 | LOW | Jest 단위 테스트, API 통합 테스트, Playwright E2E 테스트, 테스트 커버리지 | 테스트 커버리지 90% 이상, CI/CD 파이프라인 테스트 |
+| T015 | 배포 및 DevOps 시스템 | 프로덕션 배포, CI/CD, 환경 관리 구현 | TODO | T012, T013 | LOW | Vercel/AWS 배포, GitHub Actions, 환경별 설정, CDN 설정, SSL 인증서 | 배포 자동화 테스트, 롤백 테스트, 환경 분리 테스트 |
+

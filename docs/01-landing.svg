@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="375" height="667" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="375" height="667" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  
+  <!-- 헤더 -->
+  <rect x="0" y="0" width="375" height="60" fill="#ffffff" stroke="#dee2e6"/>
+  <text x="187.5" y="35" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#212529">Mira 합의메커니즘</text>
+  
+  <!-- 메인 컨텐츠 영역 -->
+  <rect x="20" y="80" width="335" height="480" fill="#ffffff" stroke="#dee2e6" rx="8"/>
+  
+  <!-- 타이틀 -->
+  <text x="187.5" y="120" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#212529">AI 답변을 9명이 검증해요!</text>
+  
+  <!-- 설명 텍스트 -->
+  <text x="187.5" y="150" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">질문을 입력하면 AI가 답변하고</text>
+  <text x="187.5" y="170" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">9개의 검증자가 사실을 확인합니다</text>
+  
+  <!-- 예시 질문 버튼들 -->
+  <rect x="40" y="200" width="295" height="40" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="187.5" y="225" text-anchor="middle" font-family="Arial" font-size="14" fill="#1976d2">"토끼에 대해 알려줘"</text>
+  
+  <rect x="40" y="250" width="295" height="40" fill="#e8f5e8" stroke="#4caf50" rx="4"/>
+  <text x="187.5" y="275" text-anchor="middle" font-family="Arial" font-size="14" fill="#388e3c">"지구는 평평한가요?"</text>
+  
+  <rect x="40" y="300" width="295" height="40" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="187.5" y="325" text-anchor="middle" font-family="Arial" font-size="14" fill="#f57c00">"인공지능이 위험한가요?"</text>
+  
+  <!-- 또는 구분선 -->
+  <line x1="40" y1="365" x2="145" y2="365" stroke="#dee2e6" stroke-width="1"/>
+  <text x="187.5" y="370" text-anchor="middle" font-family="Arial" font-size="12" fill="#adb5bd">또는</text>
+  <line x1="230" y1="365" x2="335" y2="365" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- 직접 입력 -->
+  <rect x="40" y="385" width="295" height="50" fill="#ffffff" stroke="#ced4da" rx="4"/>
+  <text x="50" y="405" font-family="Arial" font-size="14" fill="#adb5bd">질문을 직접 입력해보세요...</text>
+  
+  <!-- 전송 버튼 -->
+  <rect x="40" y="450" width="295" height="50" fill="#007bff" stroke="#0056b3" rx="4"/>
+  <text x="187.5" y="480" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">검증 시작하기</text>
+  
+  <!-- 하단 안내 -->
+  <text x="187.5" y="590" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">📱 모바일에서도 완벽 지원</text>
+  <text x="187.5" y="610" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">⚡ 평균 2분 내 결과 확인</text>
+</svg> 

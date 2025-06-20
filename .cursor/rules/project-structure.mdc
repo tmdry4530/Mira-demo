@@ -1,0 +1,106 @@
+---
+description: project-structure
+globs: 
+alwaysApply: false
+---
+# Mira 합의메커니즘 웹앱 - 프로젝트 폴더 구조
+
+## 📋 개요
+
+이 룰은 1인 개발자를 위한 Mira 웹앱의 프로젝트 폴더 구조를 정의합니다.
+
+**참조 룰**:
+- [mira-prd.mdc](mdc:.cursor/rules/mira-prd.mdc) - 기술 스택 정의
+- [api-specification.mdc](mdc:.cursor/rules/api-specification.mdc) - API 엔드포인트 구조
+
+## 📁 폴더 트리
+
+```
+mira-consensus/
+├── frontend/                     # Next.js Frontend
+│   ├── src/
+│   │   ├── app/                  # App Router
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx          # Landing Page
+│   │   │   ├── generate/
+│   │   │   │   └── page.tsx      # Generation Page
+│   │   │   ├── split/
+│   │   │   │   └── page.tsx      # Split Page
+│   │   │   ├── verify/
+│   │   │   │   └── page.tsx      # Verification Page
+│   │   │   └── results/
+│   │   │       └── page.tsx      # Results Page
+│   │   ├── components/           # UI Components
+│   │   │   ├── ui/
+│   │   │   │   ├── Button.tsx
+│   │   │   │   ├── Input.tsx
+│   │   │   │   ├── Loading.tsx
+│   │   │   │   └── ProgressBar.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── VerificationGrid.tsx
+│   │   │   └── ErrorBoundary.tsx
+│   │   ├── hooks/                # Custom Hooks
+│   │   │   ├── useApi.ts
+│   │   │   ├── useWebSocket.ts
+│   │   │   └── useVerification.ts
+│   │   ├── store/                # Zustand Store
+│   │   │   └── index.ts
+│   │   ├── types/                # TypeScript Types
+│   │   │   └── index.ts
+│   │   └── utils/                # Utilities
+│   │       └── api.ts
+│   ├── public/                   # Static Assets
+│   │   └── favicon.ico
+│   ├── package.json
+│   ├── tailwind.config.js
+│   ├── next.config.js
+│   └── tsconfig.json
+│
+├── backend/                      # Express.js Backend
+│   ├── src/
+│   │   ├── routes/               # API Routes
+│   │   │   ├── question.ts       # POST /api/question
+│   │   │   ├── generate.ts       # POST /api/generate
+│   │   │   ├── split.ts          # POST /api/split
+│   │   │   ├── verify.ts         # POST /api/verify
+│   │   │   ├── consensus.ts      # GET /api/consensus
+│   │   │   └── progress.ts       # GET /api/progress
+│   │   ├── controllers/          # Business Logic
+│   │   │   ├── questionController.ts
+│   │   │   ├── generateController.ts
+│   │   │   ├── splitController.ts
+│   │   │   ├── verifyController.ts
+│   │   │   └── consensusController.ts
+│   │   ├── services/             # External API Services
+│   │   │   ├── openaiService.ts  # GPT API
+│   │   │   └── geminiService.ts  # Gemini API
+│   │   ├── types/                # TypeScript Types
+│   │   │   └── index.ts
+│   │   ├── utils/                # Utilities
+│   │   │   ├── logger.ts
+│   │   │   └── websocket.ts
+│   │   └── app.ts                # Express App
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env.example
+│
+├── docs/                         # Documentation
+│   ├── ui-ux-wireframes.md
+│   ├── 01-landing.svg
+│   ├── 02-ai-generation.svg
+│   ├── 03-proposition-split.svg
+│   ├── 04-verification.svg
+│   └── 05-results.svg
+│
+├── .cursor/                      # Cursor Rules
+│   └── rules/
+│       ├── mira-prd.mdc
+│       ├── api-specification.mdc
+│       ├── system-architecture.mdc
+│       ├── ui-ux-wireframes.mdc
+│       └── project-structure.mdc
+│
+├── README.md
+├── package.json                  # Root package.json
+└── .gitignore
+

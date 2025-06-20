@@ -1,0 +1,273 @@
+---
+description: tech-stack
+globs: 
+alwaysApply: false
+---
+# Mira 합의메커니즘 웹앱 - 기술스택 가이드 (2025 최신 버전)
+
+## 프로젝트 개요
+Mira 합의메커니즘 시연 웹앱의 기술스택 및 최신 패키지 버전 가이드입니다. 모든 패키지는 2025년 기준 최신 안정 버전을 사용합니다.
+
+## Frontend 기술스택
+
+### Core Framework
+- **Next.js**: `15.1.8` (최신 안정 버전)
+  - App Router 사용 필수
+  - Turbopack 개발 서버 활용
+  - React 19 호환 버전
+- **React**: `19.0.0` (최신 메이저 버전)
+- **React-DOM**: `19.0.0`
+- **TypeScript**: `5.7.x` (최신 안정 버전)
+
+### 스타일링 & UI
+- **Tailwind CSS**: `4.x` (최신 메이저 버전)
+- **@tailwindcss/typography**: 최신 버전
+- **Tailwind CSS Animate**: 최신 버전
+- **Headless UI**: 최신 버전 (완전 접근 가능한 UI 컴포넌트)
+- **Heroicons**: 최신 버전 (SVG 아이콘)
+
+### 상태 관리 & 애니메이션
+- **Zustand**: `5.x` (경량 상태 관리)
+- **Framer Motion**: `12.x` (애니메이션 라이브러리)
+- **React Query/TanStack Query**: `5.x` (서버 상태 관리)
+
+### 개발 도구
+- **ESLint**: `9.x`
+- **eslint-config-next**: `15.x` (Next.js 전용 ESLint 설정)
+- **Prettier**: `3.x`
+- **Prettier Plugin Tailwind CSS**: 최신 버전
+
+## Backend 기술스택
+
+### Runtime & Framework
+- **Node.js**: `22.x` (LTS 최신 버전)
+- **Express.js**: `5.x` (최신 메이저 버전)
+- **TypeScript**: `5.7.x`
+
+### AI API 통합
+- **Google AI SDK**: `0.x` (Gemini API 연동 - 답변 생성용/명제 분할 및 검증용 분리)
+- **Axios**: `1.7.x` (HTTP 클라이언트)
+
+### 개발 도구
+- **tsx**: `4.x` (TypeScript 실행 도구)
+- **nodemon**: `3.x` (개발 서버 자동 재시작)
+- **dotenv**: `16.x` (환경 변수 관리)
+
+## Package.json 템플릿
+
+### Frontend (Next.js App)
+```json
+{
+  "name": "mira-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.0",
+    "framer-motion": "^12.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@headlessui/react": "^2.0.0",
+    "@heroicons/react": "^2.0.0",
+    "axios": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "tailwindcss-animate": "^1.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.1.8",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.6.0"
+  }
+}
+```
+
+### Backend (Express API)
+```json
+{
+  "name": "mira-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^5.0.0",
+    "@google/generative-ai": "^0.15.0",
+    "axios": "^1.7.0",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/express": "^4.17.0",
+    "@types/cors": "^2.8.0",
+    "typescript": "^5.7.0",
+    "tsx": "^4.0.0",
+    "nodemon": "^3.0.0",
+    "eslint": "^9.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0"
+  }
+}
+```
+
+## TypeScript 설정
+
+### tsconfig.json (Frontend)
+```json
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+### tsconfig.json (Backend)
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+## 설치 명령어
+
+### 프로젝트 초기 설정
+```bash
+# Next.js 앱 생성 (TypeScript, Tailwind CSS, App Router)
+npx create-next-app@latest mira-frontend --typescript --tailwind --app
+
+# 백엔드 초기 설정
+mkdir mira-backend && cd mira-backend
+npm init -y
+```
+
+### 의존성 설치
+```bash
+# Frontend 의존성
+npm install next@latest react@latest react-dom@latest
+npm install -D typescript@latest @types/react@latest @types/react-dom@latest
+
+# Backend 의존성
+npm install express@latest @google/generative-ai@latest
+npm install -D typescript@latest @types/node@latest @types/express@latest tsx@latest
+```
+
+## 최신 버전 유지 명령어
+
+### 정기 업데이트
+```bash
+# 모든 패키지 최신 버전 확인
+npm outdated
+
+# 패키지 업데이트
+npm update
+
+# 주요 패키지 최신 버전 설치
+npm install next@latest react@latest react-dom@latest eslint-config-next@latest
+```
+
+### Canary/Beta 버전 (실험적)
+```bash
+# Next.js canary 버전 (최신 기능 테스트용)
+npm install next@canary
+
+# React 19 RC 버전
+npm install react@rc react-dom@rc
+```
+
+## 환경별 설정
+
+### 개발 환경
+- 모든 패키지 최신 버전 사용
+- Hot Module Replacement (HMR) 활성화
+- TypeScript 엄격 모드
+- ESLint + Prettier 자동 포맷팅
+
+### 프로덕션 환경
+- 안정 버전(stable) 우선 사용
+- 성능 최적화 설정
+- 번들 크기 최적화
+- 에러 모니터링
+
+## 호환성 매트릭스
+
+| 패키지 | 버전 | Node.js | TypeScript | 비고 |
+|--------|------|---------|------------|------|
+| Next.js | 15.x | 18+ | 4.5+ | React 19 지원 |
+| React | 19.x | 16+ | 4.7+ | 최신 메이저 버전 |
+| TypeScript | 5.7.x | 18+ | - | 최신 안정 버전 |
+| Tailwind CSS | 4.x | 16+ | 4.1+ | CSS-in-JS 지원 |
+
+## 주의사항
+
+### 버전 충돌 방지
+- `pnpm overrides` 또는 `npm overrides` 사용
+- `@types` 패키지 버전 일치
+- peer dependencies 호환성 확인
+
+### 성능 고려사항
+- Bundle analyzer로 번들 크기 모니터링
+- Tree shaking 최적화
+- Dynamic imports 활용
+- 이미지 최적화 (Next.js Image 컴포넌트)
+
+이 기술스택 가이드는 2025년 1월 기준 최신 버전을 반영하며, 정기적으로 업데이트해야 합니다.
+

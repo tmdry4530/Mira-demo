@@ -1,0 +1,400 @@
+---
+description: system-architecture
+globs: 
+alwaysApply: false
+---
+# Mira 합의메커니즘 웹앱 - 시스템 아키텍처 설계
+
+## 📋 개요
+
+이 룰은 Mira 합의메커니즘 웹앱의 전체 시스템 아키텍처를 정의합니다. 사용자 시나리오와 기술 요구사항을 바탕으로 확장 가능하고 안정적인 시스템 구조를 설계합니다.
+
+**참조 룰**: 
+- [mira-prd.mdc](mdc:.cursor/rules/mira-prd.mdc) - 기술 스택 정의
+- [user-scenarios.mdc](mdc:.cursor/rules/user-scenarios.mdc) - 플로우 다이어그램
+- [ui-ux-wireframes.mdc](mdc:.cursor/rules/ui-ux-wireframes.mdc) - UI 컴포넌트 구조
+
+## 🏗️ 전체 시스템 아키텍처
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        U[User Browser]
+        M[Mobile App]
+    end
+    
+    subgraph "Frontend Layer (Next.js)"
+        R[React Router]
+        C1[Landing Component]
+        C2[Generation Component] 
+        C3[Split Component]
+        C4[Verification Component]
+        C5[Results Component]
+        
+        S[State Management<br/>Zustand/Context]
+        UI[UI Components<br/>Tailwind CSS]
+        A[Animations<br/>Framer Motion]
+    end
+    
+    subgraph "API Layer (Node.js)"
+        API[Express Server]
+        MW[Middleware<br/>Auth, CORS, Rate Limit]
+        RT1[/api/question]
+        RT2[/api/generate] 
+        RT3[/api/split]
+        RT4[/api/verify-v2]
+        RT5[/api/consensus]
+        
+        BL[Business Logic]
+        EH[Error Handling]
+        WS[WebSocket/SSE<br/>Real-time Updates]
+    end
+    
+    subgraph "External Services"
+        GMA[Gemini API<br/>답변 생성]
+        GM1[Gemini API<br/>명제 분할 및 검증]
+        
+        subgraph "16개 검증자 클러스터 (4x4 그리드)"
+            V1[Validator 1-4<br/>논리 검증자]
+            V2[Validator 5-8<br/>사실 검증자] 
+            V3[Validator 9-12<br/>맥락 검증자]
+            V4[Validator 13-16<br/>종합 검증자]
+        end
+    end
+    
+    subgraph "Infrastructure"
+        LB[Load Balancer]
+        CD[CDN]
+        MON[Monitoring<br/>Logs, Metrics]
+    end
+    
+    %% Connections
+    U --> CD
+    M --> CD
+    CD --> LB
+    LB --> R
+    
+    R --> C1
+    R --> C2
+    R --> C3
+    R --> C4
+    R --> C5
+    
+    C1 -.-> S
+    C2 -.-> S
+    C3 -.-> S
+    C4 -.-> S
+    C5 -.-> S
+    
+    S --> API
+    API --> MW
+    MW --> RT1
+    MW --> RT2
+    MW --> RT3
+    MW --> RT4
+    MW --> RT5
+    
+    RT1 --> BL
+    RT2 --> BL
+    RT3 --> BL
+    RT4 --> BL
+    RT5 --> BL
+    
+    BL --> EH
+    BL --> GMA
+    BL --> GM1
+    BL --> V1
+    BL --> V2
+    BL --> V3
+    BL --> V4
+    
+    API --> WS
+    WS --> S
+    
+    API --> MON
+    GMA --> MON
+    GM1 --> MON
+```
+
+## 🔄 데이터 플로우 아키텍처 (16개 검증자)
+
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant FE as Frontend
+    participant API as Backend API
+    participant GMA as Gemini (Answer)
+    participant GM as Gemini (Split & Verify)
+    participant V1 as Validator 1-4
+    participant V2 as Validator 5-8
+    participant V3 as Validator 9-12
+    participant V4 as Validator 13-16
+    participant WS as WebSocket
+    
+    Note over User, WS: 1. 질문 입력 단계
+    User->>FE: 질문 입력
+    FE->>API: POST /api/question
+    API-->>FE: 질문 검증 완료
+    
+    Note over User, WS: 2. AI 답변 생성 단계
+    API->>GMA: 답변 생성 요청 (gemini-2.5-flash-lite-preview-06-17)
+    API->>WS: 진행률 업데이트 (10%)
+    WS-->>FE: 실시간 진행률
+    FE-->>User: 로딩 화면 업데이트
+    
+    GMA-->>API: AI 답변 반환
+    API->>WS: 진행률 업데이트 (40%)
+    WS-->>FE: 답변 생성 완료
+    
+    Note over User, WS: 3. 명제 분할 단계
+    API->>GM: 명제 분할 요청 (Rate Limited)
+    API->>WS: 진행률 업데이트 (50%)
+    GM-->>API: 분할된 명제들
+    API->>WS: 분할 완료 (60%)
+    WS-->>FE: 명제 시각화
+    
+    Note over User, WS: 4. 16개 검증자 배치 처리 단계
+    Note over API: Rate Limiting: 2개씩 배치, 6초 간격
+    
+    loop 배치 1 (Validator 1-2)
+        API->>V1: 검증 요청 (논리)
+        API->>V1: 검증 요청 (논리)
+        V1-->>API: 검증 결과 1-2
+        API->>WS: 진행률 업데이트 (65%)
+        WS-->>FE: 4x4 그리드 업데이트
+        FE-->>User: 검증자 카드 상태 변경
+        Note over API: 6초 대기 (Rate Limit 준수)
+    end
+    
+    loop 배치 2-8 (Validator 3-16)
+        API->>V2: 검증 요청 (사실)
+        API->>V3: 검증 요청 (맥락)
+        API->>V4: 검증 요청 (종합)
+        V2-->>API: 검증 결과
+        V3-->>API: 검증 결과
+        V4-->>API: 검증 결과
+        API->>WS: 진행률 업데이트 (70-95%)
+        WS-->>FE: 실시간 4x4 그리드 업데이트
+        FE-->>User: 검증자 상태 시각화
+        Note over API: 6초 대기 (Rate Limit 준수)
+    end
+    
+    Note over User, WS: 5. 합의 및 결과 단계 (16개 기준)
+    API->>API: 과반수 판정 로직 (9/16)
+    API->>WS: 최종 결과 (100%)
+    WS-->>FE: 검증 완료
+    FE-->>User: 결과 화면 표시
+```
+
+## 🏛️ 컴포넌트 아키텍처 (16개 검증자)
+
+```mermaid
+graph LR
+    subgraph "페이지 컴포넌트"
+        LP[LandingPage]
+        GP[GenerationPage]
+        SP[SplitPage] 
+        VP[VerificationPage<br/>4x4 Grid]
+        RP[ResultsPage]
+    end
+    
+    subgraph "공통 컴포넌트"
+        H[Header]
+        L[Loading]
+        P[ProgressBar]
+        B[Button]
+        I[Input]
+        E[ErrorBoundary]
+        VG[4x4 Validator Grid]
+        VC[Validator Card]
+    end
+    
+    subgraph "상태 관리"
+        GS[Global State<br/>Zustand Store]
+        QS[Question State]
+        AS[Answer State]
+        PS[Proposition State]
+        VS[Verification State<br/>16 Validators]
+        RS[Result State]
+    end
+    
+    subgraph "API 계층"
+        QH[Question Handler]
+        GH[Generation Handler]
+        SH[Split Handler]
+        VH[Verification Handler<br/>Rate Limited]
+        RH[Result Handler]
+    end
+    
+    %% 컴포넌트 관계
+    LP --> H
+    LP --> I
+    LP --> B
+    
+    GP --> H
+    GP --> L
+    GP --> P
+    
+    SP --> H
+    SP --> P
+    
+    VP --> H
+    VP --> VG
+    VP --> VC
+    VP --> P
+    
+    RP --> H
+    RP --> B
+    
+    %% 상태 관리 연결
+    LP -.-> QS
+    GP -.-> AS
+    SP -.-> PS
+    VP -.-> VS
+    RP -.-> RS
+    
+    QS --> GS
+    AS --> GS
+    PS --> GS
+    VS --> GS
+    RS --> GS
+    
+    %% API 연결
+    GS --> QH
+    GS --> GH
+    GS --> SH
+    GS --> VH
+    GS --> RH
+```
+
+## ⚙️ 기술 스택 세부사항 (업데이트)
+
+### Frontend Stack
+```
+Next.js 15.1.8 (App Router)
+├── React 19.0.0 (Server Components)
+├── TypeScript 5.7.x (타입 안전성)
+├── Zustand 5.x (상태 관리)
+├── Tailwind CSS 4.x (스타일링)
+├── Framer Motion 12.x (애니메이션)
+├── React Query 5.x (서버 상태)
+└── WebSocket Client (실시간)
+```
+
+### Backend Stack  
+```
+Node.js 22.x (Express.js)
+├── TypeScript 5.7.x (타입 안전성)
+├── Express.js 5.x (웹 프레임워크)
+├── Socket.io (실시간 통신)
+├── Axios 1.7.x (HTTP 클라이언트)
+├── Rate Limiting (분당 12개 요청)
+├── CORS (보안)
+└── Winston (로깅)
+```
+
+### External APIs (업데이트)
+```
+AI Services
+├── Gemini 2.5 Flash Lite Preview (답변 생성)
+├── Gemini 2.5 Flash Lite Preview (명제 분할)
+└── 16x Gemini 2.5 Flash Lite Preview (배치 검증)
+```
+
+## 🔒 보안 아키텍처 (Rate Limiting 강화)
+
+```mermaid
+graph TD
+    subgraph "보안 계층"
+        CDN[CDN + DDoS Protection]
+        LB[Load Balancer + SSL]
+        WAF[Web Application Firewall]
+        
+        subgraph "API 보안"
+            RL[Rate Limiting<br/>분당 12개 요청]
+            CORS[CORS Policy] 
+            VAL[Input Validation]
+            AUTH[API Key Management]
+            EB[429 Error Handling<br/>45초 재시도]
+        end
+        
+        subgraph "데이터 보안"
+            ENC[Data Encryption]
+            LOG[Audit Logging]
+            MON[Security Monitoring]
+        end
+    end
+    
+    Internet --> CDN
+    CDN --> LB
+    LB --> WAF
+    WAF --> RL
+    RL --> CORS
+    CORS --> VAL
+    VAL --> AUTH
+    AUTH --> EB
+    
+    EB --> ENC
+    ENC --> LOG
+    LOG --> MON
+```
+
+## 📊 모니터링 & 운영 (에러 해결 포함)
+
+### 핵심 메트릭
+- **응답 시간**: API 호출별 latency 추적
+- **성공률**: 각 AI API 호출 성공/실패율 (404, 429 오류 모니터링)
+- **동시 사용자**: 실시간 접속자 수
+- **검증 정확도**: 16개 검증자별 검증 결과 분석
+- **Rate Limit 준수율**: 분당 요청 수 모니터링
+
+### 알림 설정
+- API 응답 시간 > 5초
+- AI API 실패율 > 10%
+- 429 Rate Limit 오류 감지
+- React 키 중복 오류 발생
+- 시스템 리소스 사용률 > 80%
+
+### 해결된 오류 모니터링
+- **404 엔드포인트 오류**: `/api/verify-v2` 라우팅 정상화
+- **429 Rate Limit 오류**: 배치 처리와 대기 시간으로 해결
+- **React 키 중복**: 고유 키 생성으로 렌더링 안정화
+
+## 🚀 확장성 고려사항 (16개 검증자 기준)
+
+### 수평적 확장
+- **Frontend**: CDN + 다중 인스턴스
+- **Backend**: 로드 밸런서 + 다중 서버
+- **AI API**: 배치 처리 최적화 + 캐싱
+
+### 성능 최적화 (업데이트)
+- **API 응답 캐싱**: 동일 질문 결과 캐싱
+- **이미지 최적화**: SVG 와이어프레임 최적화
+- **코드 분할**: 페이지별 lazy loading
+- **WebSocket 풀링**: 연결 재사용
+- **4x4 그리드 최적화**: 검증자 카드 렌더링 최적화
+- **Rate Limiting**: Gemini API 제약 준수로 안정성 확보
+
+## ✅ 구현 우선순위 (완료 상태)
+
+### Phase 1: 핵심 인프라 (완료) ✅
+- [x] Next.js 프로젝트 설정
+- [x] Express.js API 서버
+- [x] Gemini API 연동 (gemini-2.5-flash-lite-preview-06-17)
+- [x] 기본 에러 핸들링 (404, 429 해결)
+
+### Phase 2: 핵심 기능 (완료) ✅
+- [x] 전체 플로우 구현 (16개 검증자)
+- [x] WebSocket 실시간 업데이트
+- [x] 상태 관리 시스템
+- [x] 4x4 그리드 UI 개발
+- [x] React 키 중복 오류 해결
+
+### Phase 3: 최적화 (완료) ✅
+- [x] Rate Limiting 성능 튜닝
+- [x] 보안 강화 (429 에러 복구)
+- [x] 모니터링 설정
+- [x] UI/UX 개선 (범례 제거, 그리드 최적화)
+
+이 시스템 아키텍처는 16개 검증자 기반의 확장 가능하고 유지보수가 용이한 구조로 설계되었으며, Rate Limiting과 에러 핸들링을 통해 안정성을 확보했습니다.
+
