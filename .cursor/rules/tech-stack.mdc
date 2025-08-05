@@ -45,7 +45,11 @@ Mira 합의메커니즘 시연 웹앱의 기술스택 및 최신 패키지 버�
 - **TypeScript**: `5.7.x`
 
 ### AI API 통합
-- **Google AI SDK**: `0.x` (Gemini API 연동 - 답변 생성용/명제 분할 및 검증용 분리)
+- **Google AI SDK**: `0.x` (Gemini API 연동)
+- **Gemini 모델**: `gemini-2.5-flash-lite-preview-06-17` (비용 효율성과 저지연 최적화)
+- **Rate Limiting**: 분당 12개 요청 제한 (여유를 둠)
+- **배치 처리**: 2개씩 배치, 6초 간격으로 순차 처리
+- **재시도 로직**: 429 오류 시 45초 대기 후 재시도
 - **Axios**: `1.7.x` (HTTP 클라이언트)
 
 ### 개발 도구
@@ -268,6 +272,49 @@ npm install react@rc react-dom@rc
 - Tree shaking 최적화
 - Dynamic imports 활용
 - 이미지 최적화 (Next.js Image 컴포넌트)
+
+## AI API 최적화 설정
+
+### Gemini API Rate Limiting 해결방안
+```typescript
+// Rate Limiter 설정
+class RateLimiter {
+  private static readonly REQUEST_LIMIT = 12; // 분당 요청 제한 (여유를 둠)
+  private static readonly RESET_INTERVAL = 60000; // 1분
+  
+  // 배치 처리 설정
+  private static readonly BATCH_SIZE = 2; // 배치 크기를 8개에서 2개로 축소
+  private static readonly BATCH_DELAY = 6000; // 배치 대기 시간을 1.5초에서 6초로 증가
+  
+  // 재시도 설정
+  private static readonly RETRY_DELAY = 45000; // Rate Limit 감지 시 45초 대기
+}
+```
+
+### Gemini 모델 설정
+```typescript
+// BaseGeminiService 설정
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash-lite-preview-06-17", // 비용 효율성과 저지연 최적화
+  generationConfig: {
+    temperature: 0.1, // 일관성 있는 결과를 위한 낮은 temperature
+    maxOutputTokens: 200, // 응답 길이 제한으로 속도 향상
+  },
+});
+```
+
+## 성능 최적화 고려사항
+
+### Gemini API 최적화
+- **모델 선택**: `gemini-2.5-flash-lite-preview-06-17` (비용 효율성 + 저지연)
+- **Rate Limiting**: 분당 12개 요청 제한으로 429 오류 방지
+- **배치 처리**: 대량 검증 시 순차 처리로 안정성 확보
+- **에러 복구**: 지수 백오프와 재시도 로직으로 안정성 향상
+
+### 프론트엔드 최적화
+- **React 키 관리**: 중복 키 방지로 렌더링 오류 해결
+- **4x4 그리드 UI**: 최적화된 검증자 표시로 사용자 경험 향상
+- **API 엔드포인트**: 정확한 라우팅으로 404 오류 방지
 
 이 기술스택 가이드는 2025년 1월 기준 최신 버전을 반영하며, 정기적으로 업데이트해야 합니다.
 
